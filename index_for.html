@@ -13,14 +13,15 @@
     <body>
         <div id="example">
             <table id="list">
-                <thaed>
+                <thead>
                     <tr>
-                        <th>번호</th><th>이름</th><th>전화번호</th><th>주소</th>
+                        <th>순서</th><th>번호</th><th>이름</th><th>전화번호</th><th>주소</th>
                     </tr>
                 </thaed>
                 
                 <tbody id = "contacts">
-                    <tr v-for="contact in contacts">
+                    <tr v-for="(contact , index) in contacts" v-if="contact.address.indexOf('서울')>-1">
+                        <td>{{index+1}}</td>
                         <td>{{contact.no}}</td>
                         <td>{{contact.name}}</td>
                         <td>{{contact.tel}}</td>
@@ -37,9 +38,9 @@
                 "totalcount" : 100,
                 "contacts" : [
                     {"no": 100, "name" : "설현", "tel" : "010-1111-1111", "address" : "서울"},
-                    {"no": 98, "name" : "설현1", "tel" : "010-2222-1111", "address" : "서울"},
-                    {"no": 87, "name" : "설현2", "tel" : "010-3333-1111", "address" : "서울"},
-                    {"no": 76, "name" : "설현3", "tel" : "010-444-1111", "address" : "서울"}
+                    {"no": 98, "name" : "쯔위", "tel" : "010-2222-1111", "address" : "서울"},
+                    {"no": 87, "name" : "사나", "tel" : "010-3333-1111", "address" : "대전"},
+                    {"no": 76, "name" : "모모", "tel" : "010-4444-1111", "address" : "서울"}
                 ]
             }
 
