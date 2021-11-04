@@ -1,28 +1,50 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <Meta Charset="utf-8">
-        <title>hello wue.js</title>
-        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
-    </head>
-    <body>
-        <div id="simple">
-            <input id="a" type="text" v-bind:value="message">
-            <br/>
-            <!-- <img v-bind:src="imagePath"/> -->
-            <img :src="imagePath"/>
-        </div>
-        <script type="text/javascript">
-            var model={
-                message : 'v-bind 디렉티브',
-                imagePath : "http://sample.bmaster.kro.kr/photos/61.jpg"
-            };
+  
+public final class RestTemplate{
 
-            var simple=new Vue({
-                el : '#simple',
-                data : model
-            })
+    private final int connectTimeOut = 5000;
+    private final int readTimeOut = 5000;
 
-        </script>
-    </body>
-</html>
+    private boolean bAsync = false;
+    private String url;
+    private HttpMethod method = HttpMethod.POST;
+    private RestTemplate restTemplate;
+
+    //org.apache.http.client.HttpClient
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+
+    public RestTemplate(String url){
+        this(url,HttpMethod.POST, false);
+    }
+
+    public RestTemplate(String url,HttpMethod method){
+        this(url,method, false);
+    }
+
+    public RestTemplate(String url,boolean bAsync){
+        this(url,HttpMethod.POST, bAsync);
+    }
+
+
+    public RestTemplate(String url, HttpMethod method, boolean bAsync){
+        this.url = url;
+        this.method = method;
+        this.bAsync = bAsync;
+
+        requestFactory.setConnectTimeout(this.connectTimeOut);
+        requestFactory.setReadTimeout(this.connectTimeOut);
+
+        this.restTemplate = new RestTemplate(requestFactory);
+    }
+
+    public ResponseEntity exchage(@Nullable Object data, @Nullable HttpHeaders headers) throws Exception{
+        if (null==this.url) throw new Exception("Url is Undefined ");
+
+        if (null==headers) headers = HttpHeaders.EMPTY;
+
+        ResponseEntity result = restTemplate.exchange(this.url, this.method
+                                                        , new HttpEntity<>(data,headers), Object.class);
+
+        return result;
+    }
+
+}
